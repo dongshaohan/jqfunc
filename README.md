@@ -27,13 +27,13 @@ jQuery对它作了拓展，多了`Array`，`Date`，`RegExp`，`Error`4种，共
 	}
 
 ##error
-	
+
 	function error ( msg ) {
 		throw new Error( msg );
 	}
 
 ##isArray
-	
+
 	isArray = Array.isArray
 
 ##isFunction
@@ -43,6 +43,7 @@ jQuery对它作了拓展，多了`Array`，`Date`，`RegExp`，`Error`4种，共
 	}
 
 ##isWindow
+用于判断指定参数是否window对象
 
 	function isWindow ( obj ) {
 		return obj != null && obj === obj.window;
@@ -55,4 +56,52 @@ jQuery对它作了拓展，多了`Array`，`Date`，`RegExp`，`Error`4种，共
 		// ...but misinterprets leading-number strings, particularly hex literals ("0x...")
 		// subtraction forces infinities to NaN
 		return obj - parseFloat( obj ) >= 0;
+	}
+
+##isPlainObject
+isPlainObject函数用于判断指定参数是否是一个纯粹的对象。
+即该对象是否通过`{}`或`new Object`创建的。
+
+	function isPlainObject ( obj ) {
+		// Not plain objects:
+		// - Any object or value whose internal [[Class]] property is not "[object Object]"
+		// - DOM nodes
+		// - window
+		if ( jQuery.type( obj ) !== "object" || obj.nodeType || jQuery.isWindow( obj ) ) {
+			return false;
+		}
+
+		// Support: Firefox <20
+		// The try/catch suppresses exceptions thrown when attempting to access
+		// the "constructor" property of certain host objects, ie. |window.location|
+		// https://bugzilla.mozilla.org/show_bug.cgi?id=814622
+		try {
+			if ( obj.constructor &&
+					!hasOwn.call( obj.constructor.prototype, "isPrototypeOf" ) ) {
+				return false;
+			}
+		} catch ( e ) {
+			return false;
+		}
+
+		// If the function hasn't returned already, we're confident that
+		// |obj| is a plain object, created by {} or constructed with new Object
+		return true;
+	}
+
+##isEmptyObject
+
+	function isEmptyObject ( obj ) {
+		var name;
+		for ( name in obj ) {
+			return false;
+		}
+		return true;
+	}
+
+##trim
+去掉字符串两边空白
+
+	function trim ( text ) {
+		return text == null ? "" : "".trim.call( text );
 	}
