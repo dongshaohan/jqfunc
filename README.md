@@ -2,8 +2,8 @@
 最近一直在阅读jQuery源码，发现里面很多API很实用，不引入jQuery的情况下，在很多其他的地方也会用到，
 所以整理出来，方便以后使用。（持续更新ing）
 
-##type
-type是个判断指定参数类型的函数。javascript中，用typeof判断的类型，共有6种，
+##isType
+isType是个判断指定参数类型的函数。javascript中，用typeof判断的类型，共有6种，
 分别是：`number`，`boolean`，`string`，`undefined`，`function`，`object`。
 jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共10种。
 
@@ -14,9 +14,9 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 
 	for ( var i in typeArr ) {
 		class2type[ "[object " + typeArr[i] + "]" ] = typeArr[i].toLowerCase();
-	}
+	};
 
-	function isType ( obj ) {
+	var isType = function ( obj ) {
 		if ( obj == null ) {
 			return obj + "";
 		}
@@ -24,13 +24,13 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 		return typeof obj === "object" || typeof obj === "function" ?
 			class2type[ toString.call(obj) ] || "object" : 
 			typeof obj;
-	}
+	};
 
 ##error
 
-	function error ( msg ) {
+	var error = function ( msg ) {
 		throw new Error( msg );
-	}
+	};
 
 ##isArray
 
@@ -38,31 +38,31 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 
 ##isFunction
 
-	function isFunction ( obj ) {
-		return type(obj) === "function";
-	}
+	var isFunction = function ( obj ) {
+		return isType(obj) === "function";
+	};
 
 ##isWindow
-用于判断指定参数是否window对象
+用于判断指定参数是否`window`对象
 
-	function isWindow ( obj ) {
+	var isWindow = function ( obj ) {
 		return obj != null && obj === obj.window;
-	}
+	};
 
 ##isNumeric
 
-	function isNumeric ( obj ) {
+	var isNumeric = function ( obj ) {
 		// parseFloat NaNs numeric-cast false positives (null|true|false|"")
 		// ...but misinterprets leading-number strings, particularly hex literals ("0x...")
 		// subtraction forces infinities to NaN
 		return obj - parseFloat( obj ) >= 0;
-	}
+	};
 
 ##isPlainObject
-isPlainObject函数用于判断指定参数是否是一个纯粹的对象。
+`isPlainObject`函数用于判断指定参数是否是一个纯粹的对象。
 即该对象是否通过`{}`或`new Object`创建的。
 
-	function isPlainObject ( obj ) {
+	var isPlainObject = function ( obj ) {
 		// Not plain objects:
 		// - Any object or value whose internal [[Class]] property is not "[object Object]"
 		// - DOM nodes
@@ -88,29 +88,29 @@ isPlainObject函数用于判断指定参数是否是一个纯粹的对象。
 		// If the function hasn't returned already, we're confident that
 		// |obj| is a plain object, created by {} or constructed with new Object
 		return true;
-	}
+	};
 
 ##isEmptyObject
 
-	function isEmptyObject ( obj ) {
+	var isEmptyObject = function ( obj ) {
 		var name;
 		for ( name in obj ) {
 			return false;
 		}
 		return true;
-	}
+	};
 
 ##trim
 去掉字符串两边空白
 
-	function trim ( text ) {
+	var trim = function ( text ) {
 		return text == null ? "" : "".trim.call( text );
-	}
+	};
 
 ##isArraylike
 类数组判断
 
-	function isArraylike ( obj ) {
+	var isArraylike = function ( obj ) {
 		var length = obj.length,
 			type = isType( obj );
 
@@ -124,12 +124,12 @@ isPlainObject函数用于判断指定参数是否是一个纯粹的对象。
 
 		return type === "array" || length === 0 ||
 			typeof length === "number" && length > 0 && ( length - 1 ) in obj;
-	}
+	};
 
-##extend
-jQuery的extend函数非常强大且灵活
+##extend of jQuery
+`jQuery`的extend函数非常强大且灵活
 
-	function extend () {
+	var extend = function () {
 		var options, name, src, copy, copyIsArray, clone,
 			target = arguments[0] || {},
 			i = 1,
@@ -194,9 +194,56 @@ jQuery的extend函数非常强大且灵活
 		return target;
 	};
 
+##Deep Extend
+与`jQuery`0耦合的extend版本
+	
+	// 深度extend
+	var deepExtend = function (out) {
+	  	out = out || {};
+
+	  	for ( var i = 1; i < arguments.length; i++ ) {
+	    	var obj = arguments[i];
+
+		    if ( !obj )
+		      continue;
+
+		    for ( var key in obj ) {
+			    if ( obj.hasOwnProperty(key) ) {
+			        if ( typeof obj[key] === 'object' )
+			          	deepExtend(out[key], obj[key]);
+			        else
+			          	out[key] = obj[key];
+			    }
+		    }
+	  	}
+
+	  	return out;
+	};
+
+	deepExtend({}, objA, objB);
+
+	// 正常extend
+	var extend = function (out) {
+	  	out = out || {};
+
+		for ( var i = 1; i < arguments.length; i++ ) {
+		    if (!arguments[i])
+		      	continue;
+
+		    for ( var key in arguments[i] ) {
+		      	if ( arguments[i].hasOwnProperty(key) )
+		        	out[key] = arguments[i][key];
+		    }
+		}
+
+	  	return out;
+	};
+
+	extend({}, objA, objB);
+
 ##each
 	
-	function each ( obj, callback, args ) {
+	var each = function ( obj, callback, args ) {
 		var value,
 			i = 0,
 			length = obj.length,
