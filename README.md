@@ -126,7 +126,7 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 			typeof length === "number" && length > 0 && ( length - 1 ) in obj;
 	};
 
-##extend of jQuery
+##Extend of jQuery
 `jQuery`的extend函数非常强大且灵活
 
 	var extend = function () {
@@ -195,7 +195,7 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 	};
 
 ##Deep Extend
-与`jQuery`0耦合的extend版本
+与`jQuery`0耦合的深度extend版本
 	
 	// 深度extend
 	var deepExtend = function (out) {
@@ -222,7 +222,9 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 
 	deepExtend({}, objA, objB);
 
-	// 正常extend
+##Extend
+与`jQuery`0耦合的正常extend版本
+
 	var extend = function (out) {
 	  	out = out || {};
 
