@@ -16,7 +16,7 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 		class2type[ "[object " + typeArr[i] + "]" ] = typeArr[i].toLowerCase();
 	}
 
-	function type ( obj ) {
+	function isType ( obj ) {
 		if ( obj == null ) {
 			return obj + "";
 		}
@@ -67,7 +67,7 @@ isPlainObject函数用于判断指定参数是否是一个纯粹的对象。
 		// - Any object or value whose internal [[Class]] property is not "[object Object]"
 		// - DOM nodes
 		// - window
-		if ( jQuery.type( obj ) !== "object" || obj.nodeType || jQuery.isWindow( obj ) ) {
+		if ( isType( obj ) !== "object" || obj.nodeType || isWindow( obj ) ) {
 			return false;
 		}
 
@@ -75,6 +75,7 @@ isPlainObject函数用于判断指定参数是否是一个纯粹的对象。
 		// The try/catch suppresses exceptions thrown when attempting to access
 		// the "constructor" property of certain host objects, ie. |window.location|
 		// https://bugzilla.mozilla.org/show_bug.cgi?id=814622
+		var hasOwn = {}.hasOwnProperty;
 		try {
 			if ( obj.constructor &&
 					!hasOwn.call( obj.constructor.prototype, "isPrototypeOf" ) ) {
@@ -111,9 +112,9 @@ isPlainObject函数用于判断指定参数是否是一个纯粹的对象。
 
 	function isArraylike ( obj ) {
 		var length = obj.length,
-			type = jQuery.type( obj );
+			type = isType( obj );
 
-		if ( type === "function" || jQuery.isWindow( obj ) ) {
+		if ( type === "function" || isWindow( obj ) ) {
 			return false;
 		}
 
@@ -145,7 +146,7 @@ jQuery的extend函数非常强大且灵活
 		}
 
 		// Handle case when target is a string or something (possible in deep copy)
-		if ( typeof target !== "object" && !jQuery.isFunction(target) ) {
+		if ( typeof target !== "object" && !isFunction(target) ) {
 			target = {};
 		}
 
@@ -169,17 +170,17 @@ jQuery的extend函数非常强大且灵活
 					}
 
 					// Recurse if we're merging plain objects or arrays
-					if ( deep && copy && ( jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)) ) ) {
+					if ( deep && copy && ( isPlainObject(copy) || (copyIsArray = isArray(copy)) ) ) {
 						if ( copyIsArray ) {
 							copyIsArray = false;
-							clone = src && jQuery.isArray(src) ? src : [];
+							clone = src && isArray(src) ? src : [];
 
 						} else {
-							clone = src && jQuery.isPlainObject(src) ? src : {};
+							clone = src && isPlainObject(src) ? src : {};
 						}
 
 						// Never move original objects, clone them
-						target[ name ] = jQuery.extend( deep, clone, copy );
+						target[ name ] = extend( deep, clone, copy );
 
 					// Don't bring in undefined values
 					} else if ( copy !== undefined ) {
