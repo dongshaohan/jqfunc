@@ -324,25 +324,3 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 
 ##JSONP
 非jQuery源码版本
-
-	var Jsonp = function (url, data, success, error) {
-		var request = new XMLHttpRequest();
-		request.open('GET', url, true);
-	
-		request.onreadystatechange = function() {
-			if ( this.readyState === 4 ) {
-			    if ( this.status >= 200 && this.status < 400 ) {
-			      	// Success!
-			      	var resp = this.responseText;
-			      	success && success(resp);
-			    } else {
-			      	// Error
-			      	var resp = this.responseText;
-			      	error && error(resp);
-			    }
-			}
-		};
-
-		request.send();
-		request = null;
-	};
