@@ -295,3 +295,28 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 
 		return obj;
 	};
+
+##ajax
+非jQuery源码版本
+
+	var ajax = function (setting) {
+		var request = new XMLHttpRequest();
+		request.open(setting.type, setting.url, true);
+
+		if ( setting.type == 'POST' )
+			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+		request.onreadystatechange = function() {
+			if ( this.readyState === 4 ) {
+			    if ( this.status >= 200 && this.status < 400 ) {
+			      	// Success!
+			      	var resp = this.responseText;
+			    } else {
+			      	// Error :(
+			    }
+			}
+		};
+
+		request.send(setting.data);
+		request = null;
+	};
