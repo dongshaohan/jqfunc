@@ -311,8 +311,11 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 			    if ( this.status >= 200 && this.status < 400 ) {
 			      	// Success!
 			      	var resp = this.responseText;
+			      	setting.success && setting.success(resp);
 			    } else {
-			      	// Error :(
+			      	// Error
+			      	var resp = this.responseText;
+			      	setting.error && setting.error(resp);
 			    }
 			}
 		};
