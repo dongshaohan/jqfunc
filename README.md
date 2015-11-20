@@ -223,7 +223,7 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 	deepExtend({}, objA, objB);
 
 ##Extend
-与`jQuery`0耦合的正常extend版本
+与`jQuery`0耦合的非深度extend版本
 
 	var extend = function (out) {
 	  	out = out || {};
