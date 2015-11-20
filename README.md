@@ -14,7 +14,7 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 
 	for ( var i in typeArr ) {
 		class2type[ "[object " + typeArr[i] + "]" ] = typeArr[i].toLowerCase();
-	};
+	}
 
 	var isType = function ( obj ) {
 		if ( obj == null ) {
@@ -229,12 +229,14 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 	  	out = out || {};
 
 		for ( var i = 1; i < arguments.length; i++ ) {
-		    if (!arguments[i])
-		      	continue;
+		    var obj = arguments[i];
 
-		    for ( var key in arguments[i] ) {
-		      	if ( arguments[i].hasOwnProperty(key) )
-		        	out[key] = arguments[i][key];
+		    if ( !obj )
+		      continue;
+
+		    for ( var key in obj ) {
+		      	if ( obj.hasOwnProperty(key) )
+		        	out[key] = obj[key];
 		    }
 		}
 
