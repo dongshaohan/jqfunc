@@ -304,7 +304,7 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 		request.open('POST', url, true);
 		request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 
-		request.onreadystatechange = function() {
+		request.onreadystatechange = function () {
 			if ( this.readyState === 4 ) {
 			    if ( this.status >= 200 && this.status < 400 ) {
 			      	// Success!
