@@ -321,6 +321,3 @@ jQuery对它作了拓展，多了`array`，`date`，`regExp`，`error`4种，共
 		request.send(data);
 		request = null;
 	};
-
-##JSONP
-非jQuery源码版本
